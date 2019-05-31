@@ -100,95 +100,107 @@ namespace GraphQLBat
             var dt = jsonStringToTable(GetJSONData());
             var countRecord = dt.Count;
 
-            StreamWriter CsvfileWriter = new StreamWriter(@"C:\test CSV result\testfile.csv");
-            using (var writer = new CsvHelper.CsvWriter(CsvfileWriter))
+            //Create new SafeFileDialog instance
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.DefaultExt = "csv";
+
+            //Display dialog and see if OK button was pressed
+            if (sfd.ShowDialog() == DialogResult.OK)
             {
-                writer.WriteField("ref_no");
-                writer.WriteField("create_date");
-                writer.WriteField("delivr_date");
-                writer.WriteField("pickup_date");
-                writer.WriteField("delivr_driver_id");
-                writer.WriteField("pickup_driver_id");
-                writer.WriteField("pickup_id");
-                writer.WriteField("dst_postcode");
-                writer.WriteField("dst_bundle_name");
-                writer.WriteField("dst_lat");
-                writer.WriteField("dst_lng");
-                writer.WriteField("src_postcode");
-                writer.WriteField("src_bundle_name");
-                writer.WriteField("src_lat");
-                writer.WriteField("src_lng");
-                writer.WriteField("dst_addr");
-                writer.WriteField("vol_w");
-                writer.WriteField("vol_h");
-                writer.WriteField("vol_l");
-                writer.WriteField("vol_weight");
-                writer.WriteField("weight");
-                writer.WriteField("pay_category");
-                writer.WriteField("pay_bonus");
-                writer.WriteField("pay");
-                writer.NextRecord();
+                //To save to defined path in config file
+                /* StreamWriter CsvfileWriter = new StreamWriter(@"C:\test CSV result\testfile.csv");  */
 
-                for (var i = 0; i < countRecord; i++)
+                //Save file to file name specified to SafeFileDialog
+                StreamWriter CsvfileWriter = new StreamWriter(sfd.FileName);
+                using (var writer = new CsvHelper.CsvWriter(CsvfileWriter))
                 {
-                    dynamic expandoObj = new ExpandoObject();
-                    expandoObj.ref_no = Convert.ToString(dt[i].ref_no);
-                    expandoObj.create_date = Convert.ToString(dt[i].create_date);
-                    expandoObj.delivr_date = Convert.ToString(dt[i].delivr_date);
-                    expandoObj.pickup_date = Convert.ToString(dt[i].pickup_date);
-                    expandoObj.delivr_driver_id = Convert.ToString(dt[i].delivr_driver_id);
-                    expandoObj.pickup_driver_id = Convert.ToString(dt[i].pickup_driver_id);
-                    expandoObj.pickup_id = Convert.ToString(dt[i].pickup_id);
-                    expandoObj.dst_postcode = Convert.ToString(dt[i].dst_postcode);
-                    expandoObj.dst_bundle_name = Convert.ToString(dt[i].dst_bundle_name);
-                    expandoObj.dst_lat = Convert.ToString(dt[i].dst_lat);
-                    expandoObj.dst_lng = Convert.ToString(dt[i].dst_lng);
-                    expandoObj.src_postcode = Convert.ToString(dt[i].src_postcode);
-                    expandoObj.src_bundle_name = Convert.ToString(dt[i].src_bundle_name);
-                    expandoObj.src_lat = Convert.ToString(dt[i].src_lat);
-                    expandoObj.src_lng = Convert.ToString(dt[i].src_lng);
-                    expandoObj.dst_addr = Convert.ToString(dt[i].dst_addr);
-                    expandoObj.vol_w = Convert.ToString(dt[i].vol_w);
-                    expandoObj.vol_h = Convert.ToString(dt[i].vol_h);
-                    expandoObj.vol_l = Convert.ToString(dt[i].vol_l);
-                    expandoObj.vol_weight = Convert.ToString(dt[i].vol_weight);
-                    expandoObj.weight = Convert.ToString(dt[i].weight);
-                    expandoObj.pay_category = Convert.ToString(dt[i].pay_category);
-                    expandoObj.pay_bonus = Convert.ToString(dt[i].pay_bonus);
-                    expandoObj.pay = Convert.ToString(dt[i].pay);
-
-                    writer.WriteField(expandoObj.ref_no);
-                    writer.WriteField(expandoObj.create_date);
-                    writer.WriteField(expandoObj.delivr_date);
-                    writer.WriteField(expandoObj.pickup_date);
-                    writer.WriteField(expandoObj.delivr_driver_id);
-                    writer.WriteField(expandoObj.pickup_driver_id);
-                    writer.WriteField(expandoObj.pickup_id);
-                    writer.WriteField(expandoObj.dst_postcode);
-                    writer.WriteField(expandoObj.dst_bundle_name);
-                    writer.WriteField(expandoObj.dst_lat);
-                    writer.WriteField(expandoObj.dst_lng);
-                    writer.WriteField(expandoObj.src_bundle_name);
-                    writer.WriteField(expandoObj.src_lat);
-                    writer.WriteField(expandoObj.src_lng);
-                    writer.WriteField(expandoObj.dst_addr);
-                    writer.WriteField(expandoObj.vol_w);
-                    writer.WriteField(expandoObj.vol_h);
-                    writer.WriteField(expandoObj.vol_l);
-                    writer.WriteField(expandoObj.vol_weight);
-                    writer.WriteField(expandoObj.weight);
-                    writer.WriteField(expandoObj.pay_category);
-                    writer.WriteField(expandoObj.pay_bonus);
-                    writer.WriteField(expandoObj.pay);
+                    writer.WriteField("ref_no");
+                    writer.WriteField("create_date");
+                    writer.WriteField("delivr_date");
+                    writer.WriteField("pickup_date");
+                    writer.WriteField("delivr_driver_id");
+                    writer.WriteField("pickup_driver_id");
+                    writer.WriteField("pickup_id");
+                    writer.WriteField("dst_postcode");
+                    writer.WriteField("dst_bundle_name");
+                    writer.WriteField("dst_lat");
+                    writer.WriteField("dst_lng");
+                    writer.WriteField("src_postcode");
+                    writer.WriteField("src_bundle_name");
+                    writer.WriteField("src_lat");
+                    writer.WriteField("src_lng");
+                    writer.WriteField("dst_addr");
+                    writer.WriteField("vol_w");
+                    writer.WriteField("vol_h");
+                    writer.WriteField("vol_l");
+                    writer.WriteField("vol_weight");
+                    writer.WriteField("weight");
+                    writer.WriteField("pay_category");
+                    writer.WriteField("pay_bonus");
+                    writer.WriteField("pay");
                     writer.NextRecord();
-                    empObj.Add(expandoObj);
-                }
-            }
-            Console.WriteLine("Total Records: " + countRecord);
-            lbl_totalrec.Text = "Total Records: " + countRecord;
 
+                    for (var i = 0; i < countRecord; i++)
+                    {
+                        dynamic expandoObj = new ExpandoObject();
+                        expandoObj.ref_no = Convert.ToString(dt[i].ref_no);
+                        expandoObj.create_date = Convert.ToString(dt[i].create_date);
+                        expandoObj.delivr_date = Convert.ToString(dt[i].delivr_date);
+                        expandoObj.pickup_date = Convert.ToString(dt[i].pickup_date);
+                        expandoObj.delivr_driver_id = Convert.ToString(dt[i].delivr_driver_id);
+                        expandoObj.pickup_driver_id = Convert.ToString(dt[i].pickup_driver_id);
+                        expandoObj.pickup_id = Convert.ToString(dt[i].pickup_id);
+                        expandoObj.dst_postcode = Convert.ToString(dt[i].dst_postcode);
+                        expandoObj.dst_bundle_name = Convert.ToString(dt[i].dst_bundle_name);
+                        expandoObj.dst_lat = Convert.ToString(dt[i].dst_lat);
+                        expandoObj.dst_lng = Convert.ToString(dt[i].dst_lng);
+                        expandoObj.src_postcode = Convert.ToString(dt[i].src_postcode);
+                        expandoObj.src_bundle_name = Convert.ToString(dt[i].src_bundle_name);
+                        expandoObj.src_lat = Convert.ToString(dt[i].src_lat);
+                        expandoObj.src_lng = Convert.ToString(dt[i].src_lng);
+                        expandoObj.dst_addr = Convert.ToString(dt[i].dst_addr);
+                        expandoObj.vol_w = Convert.ToString(dt[i].vol_w);
+                        expandoObj.vol_h = Convert.ToString(dt[i].vol_h);
+                        expandoObj.vol_l = Convert.ToString(dt[i].vol_l);
+                        expandoObj.vol_weight = Convert.ToString(dt[i].vol_weight);
+                        expandoObj.weight = Convert.ToString(dt[i].weight);
+                        expandoObj.pay_category = Convert.ToString(dt[i].pay_category);
+                        expandoObj.pay_bonus = Convert.ToString(dt[i].pay_bonus);
+                        expandoObj.pay = Convert.ToString(dt[i].pay);
+
+                        writer.WriteField(expandoObj.ref_no);
+                        writer.WriteField(expandoObj.create_date);
+                        writer.WriteField(expandoObj.delivr_date);
+                        writer.WriteField(expandoObj.pickup_date);
+                        writer.WriteField(expandoObj.delivr_driver_id);
+                        writer.WriteField(expandoObj.pickup_driver_id);
+                        writer.WriteField(expandoObj.pickup_id);
+                        writer.WriteField(expandoObj.dst_postcode);
+                        writer.WriteField(expandoObj.dst_bundle_name);
+                        writer.WriteField(expandoObj.dst_lat);
+                        writer.WriteField(expandoObj.dst_lng);
+                        writer.WriteField(expandoObj.src_bundle_name);
+                        writer.WriteField(expandoObj.src_lat);
+                        writer.WriteField(expandoObj.src_lng);
+                        writer.WriteField(expandoObj.dst_addr);
+                        writer.WriteField(expandoObj.vol_w);
+                        writer.WriteField(expandoObj.vol_h);
+                        writer.WriteField(expandoObj.vol_l);
+                        writer.WriteField(expandoObj.vol_weight);
+                        writer.WriteField(expandoObj.weight);
+                        writer.WriteField(expandoObj.pay_category);
+                        writer.WriteField(expandoObj.pay_bonus);
+                        writer.WriteField(expandoObj.pay);
+                        writer.NextRecord();
+                        empObj.Add(expandoObj);
+                    }
+                }
+                Console.WriteLine("Total Records: " + countRecord);
+                lbl_totalrec.Text = "Total Records: " + countRecord;
+            }
             #region MESSAGE BOX - NOTIFIED CSV SAVED
-            string message = "CSV file is saved at C:\\test CSV result\\testfile.csv";
+            string message = Path.GetDirectoryName(sfd.FileName);
+
             string title = "JSON to CSV";
             MessageBox.Show(message, title);
             #endregion
@@ -279,5 +291,10 @@ namespace GraphQLBat
             public double pay { get; set; }
         }
         #endregion
+
+        private void Btn_close_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

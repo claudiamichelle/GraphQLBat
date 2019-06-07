@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Dynamic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -58,8 +59,8 @@ namespace GraphQLBat
             //@"{courex_user_profile(uid:" + UID + "){user_uid user_full_name}}";
 
             /* query for startdate-enddate */
-            @"{delivery_list : transaction_info_list (start_date:""" + startdate + "\"" + ",end_date:" + "\"" + enddate + "\"" + "){list {ref_no create_date  delivr_date pickup_date delivr_driver_id pickup_driver_id pickup_id dst_postcode dst_bundle_name dst_lat dst_lng src_postcode src_bundle_name src_lat src_lng dst_addr vol_w vol_h vol_l vol_weight weight pay_category pay_bonus pay}}}";
-            //@"{delivery_list : transaction_info_list (start_date:""" + startdate + "\"" + ",end_date:" + "\"" + enddate + "\"" + "){list {ref_no create_date}}}";
+            // @"{delivery_list : transaction_info_list (start_date:""" + startdate + "\"" + ",end_date:" + "\"" + enddate + "\"" + "){list {ref_no create_date  delivr_date pickup_date delivr_driver_id pickup_driver_id pickup_id dst_postcode dst_bundle_name dst_lat dst_lng src_postcode src_bundle_name src_lat src_lng dst_addr vol_w vol_h vol_l vol_weight weight pay_category pay_bonus pay}}}";
+            @"{delivery_list : transaction_info_list (start_date:""" + startdate + "\"" + ",end_date:" + "\"" + enddate + "\"" + "){list {ref_no    bundle_id      driver_id: delivr_driver_id      create_date      pickup_time: pickup_date      pickup_postalcode: src_postcode      Pickup_Latitude: src_lat      Pickup_Longtitude: src_lng      delivery_date: delivr_date      delivery_time: delivr_date      delivery_type      delivery_postalcode: dst_postcode      delivery_latitude: dst_lat      delivery_longitude: dst_lng      service_time: service_type      weight      vol_w      vol_h      vol_l      vol_weight      volume: vol_w    pay      Bonus: pay_bonus}    }}";
 
             Console.WriteLine(query);
 
@@ -114,85 +115,112 @@ namespace GraphQLBat
                 StreamWriter CsvfileWriter = new StreamWriter(sfd.FileName);
                 using (var writer = new CsvHelper.CsvWriter(CsvfileWriter))
                 {
-                    writer.WriteField("ref_no");
-                    writer.WriteField("create_date");
-                    writer.WriteField("delivr_date");
-                    writer.WriteField("pickup_date");
-                    writer.WriteField("delivr_driver_id");
-                    writer.WriteField("pickup_driver_id");
-                    writer.WriteField("pickup_id");
-                    writer.WriteField("dst_postcode");
-                    writer.WriteField("dst_bundle_name");
-                    writer.WriteField("dst_lat");
-                    writer.WriteField("dst_lng");
-                    writer.WriteField("src_postcode");
-                    writer.WriteField("src_bundle_name");
-                    writer.WriteField("src_lat");
-                    writer.WriteField("src_lng");
-                    writer.WriteField("dst_addr");
+                    writer.WriteField("Ref No");
+                    writer.WriteField("Bundle ID");
+                    writer.WriteField("Driver ID");
+                    writer.WriteField("Create Date");
+                    writer.WriteField("Pickup Time");
+                    writer.WriteField("Pickup Postal Code");
+                    writer.WriteField("Pickup Latitude");
+                    writer.WriteField("Pickup Longtitude");
+                    writer.WriteField("Delivery Date");
+                    writer.WriteField("Delivery Time");
+                    writer.WriteField("Delivery Type");
+                    writer.WriteField("Delivery Postal Code");
+                    writer.WriteField("Delivery Latitude");
+                    writer.WriteField("Delivery Longtitude");
+                    writer.WriteField("Service Time");
+                    writer.WriteField("Weight");
                     writer.WriteField("vol_w");
                     writer.WriteField("vol_h");
                     writer.WriteField("vol_l");
                     writer.WriteField("vol_weight");
-                    writer.WriteField("weight");
-                    writer.WriteField("pay_category");
-                    writer.WriteField("pay_bonus");
-                    writer.WriteField("pay");
+                    writer.WriteField("Volume");
+                    writer.WriteField("Pay");
+                    writer.WriteField("Bonus");
                     writer.NextRecord();
+
+                    dtp_EndDate.Value = dtp_EndDate.Value.AddDays(1);
 
                     for (var i = 0; i < countRecord; i++)
                     {
                         dynamic expandoObj = new ExpandoObject();
-                        expandoObj.ref_no = Convert.ToString(dt[i].ref_no);
-                        expandoObj.create_date = Convert.ToString(dt[i].create_date);
-                        expandoObj.delivr_date = Convert.ToString(dt[i].delivr_date);
-                        expandoObj.pickup_date = Convert.ToString(dt[i].pickup_date);
-                        expandoObj.delivr_driver_id = Convert.ToString(dt[i].delivr_driver_id);
-                        expandoObj.pickup_driver_id = Convert.ToString(dt[i].pickup_driver_id);
-                        expandoObj.pickup_id = Convert.ToString(dt[i].pickup_id);
-                        expandoObj.dst_postcode = Convert.ToString(dt[i].dst_postcode);
-                        expandoObj.dst_bundle_name = Convert.ToString(dt[i].dst_bundle_name);
-                        expandoObj.dst_lat = Convert.ToString(dt[i].dst_lat);
-                        expandoObj.dst_lng = Convert.ToString(dt[i].dst_lng);
-                        expandoObj.src_postcode = Convert.ToString(dt[i].src_postcode);
-                        expandoObj.src_bundle_name = Convert.ToString(dt[i].src_bundle_name);
-                        expandoObj.src_lat = Convert.ToString(dt[i].src_lat);
-                        expandoObj.src_lng = Convert.ToString(dt[i].src_lng);
-                        expandoObj.dst_addr = Convert.ToString(dt[i].dst_addr);
-                        expandoObj.vol_w = Convert.ToString(dt[i].vol_w);
-                        expandoObj.vol_h = Convert.ToString(dt[i].vol_h);
-                        expandoObj.vol_l = Convert.ToString(dt[i].vol_l);
-                        expandoObj.vol_weight = Convert.ToString(dt[i].vol_weight);
-                        expandoObj.weight = Convert.ToString(dt[i].weight);
-                        expandoObj.pay_category = Convert.ToString(dt[i].pay_category);
-                        expandoObj.pay_bonus = Convert.ToString(dt[i].pay_bonus);
-                        expandoObj.pay = Convert.ToString(dt[i].pay);
+                        if (dt[i].delivery_date.Value.Date == dtp_EndDate.Value.Date)
+                        {
+                            expandoObj.ref_no = Convert.ToString(dt[i].ref_no);
+                            expandoObj.bundle_id = Convert.ToString(dt[i].bundle_id);
+                            expandoObj.driver_id = Convert.ToString(dt[i].driver_id);
+                            expandoObj.create_date = dt[i].create_date.Value.ToString("yyyy-MM-dd'T'HH:mm:ss");
+                            expandoObj.pickup_time = "8:00:00";
+                            expandoObj.pickup_postalcode = Convert.ToString(dt[i].pickup_postalcode);
+                            expandoObj.Pickup_Latitude = Convert.ToString(dt[i].Pickup_Latitude);
+                            expandoObj.Pickup_Longtitude = Convert.ToString(dt[i].Pickup_Longtitude);
+                            expandoObj.delivery_date = dt[i].delivery_date.Value.ToString("yyyy-MM-dd");
+                            expandoObj.delivery_time = dt[i].delivery_date.Value.ToString("HH:mm:ss");
+                            expandoObj.delivery_type = Convert.ToString(dt[i].delivery_type);
+                            expandoObj.delivery_postalcode = Convert.ToString(dt[i].delivery_postalcode);
+                            expandoObj.delivery_latitude = Convert.ToString(dt[i].delivery_latitude);
+                            expandoObj.delivery_longitude = Convert.ToString(dt[i].delivery_longitude);
+                            expandoObj.service_time = 10;
+                            expandoObj.weight = Convert.ToString(dt[i].weight);
+                            expandoObj.vol_w = Convert.ToString(dt[i].vol_w);
+                            expandoObj.vol_h = Convert.ToString(dt[i].vol_h);
+                            expandoObj.vol_l = Convert.ToString(dt[i].vol_l);
+                            expandoObj.vol_weight = Convert.ToString(dt[i].vol_weight);
+                            double countVolume = dt[i].vol_w * dt[i].vol_h * dt[i].vol_l * 0.000001;
+                            expandoObj.volume = Convert.ToString(countVolume);
 
-                        writer.WriteField(expandoObj.ref_no);
-                        writer.WriteField(expandoObj.create_date);
-                        writer.WriteField(expandoObj.delivr_date);
-                        writer.WriteField(expandoObj.pickup_date);
-                        writer.WriteField(expandoObj.delivr_driver_id);
-                        writer.WriteField(expandoObj.pickup_driver_id);
-                        writer.WriteField(expandoObj.pickup_id);
-                        writer.WriteField(expandoObj.dst_postcode);
-                        writer.WriteField(expandoObj.dst_bundle_name);
-                        writer.WriteField(expandoObj.dst_lat);
-                        writer.WriteField(expandoObj.dst_lng);
-                        writer.WriteField(expandoObj.src_bundle_name);
-                        writer.WriteField(expandoObj.src_lat);
-                        writer.WriteField(expandoObj.src_lng);
-                        writer.WriteField(expandoObj.dst_addr);
-                        writer.WriteField(expandoObj.vol_w);
-                        writer.WriteField(expandoObj.vol_h);
-                        writer.WriteField(expandoObj.vol_l);
-                        writer.WriteField(expandoObj.vol_weight);
-                        writer.WriteField(expandoObj.weight);
-                        writer.WriteField(expandoObj.pay_category);
-                        writer.WriteField(expandoObj.pay_bonus);
-                        writer.WriteField(expandoObj.pay);
-                        writer.NextRecord();
-                        empObj.Add(expandoObj);
+                            double payment, totalvol;
+                            totalvol = dt[i].vol_w + dt[i].vol_h + dt[i].vol_l;
+                            if (totalvol < 80 || dt[i].vol_w < 5)
+                            {
+                                payment = 2.8;
+                            }
+                            else if (totalvol < 120 || dt[i].vol_w < 10)
+                            {
+                                payment = 5;
+                            }
+                            else if (totalvol < 160 || dt[i].vol_w < 30)
+                            {
+                                payment = 8;
+                            }
+                            else
+                            {
+                                payment = 12;
+                            }
+                            expandoObj.pay = Convert.ToString(payment);
+                            expandoObj.Bonus = Convert.ToString(dt[i].Bonus);
+
+                            writer.WriteField(expandoObj.ref_no);
+                            writer.WriteField(expandoObj.bundle_id);
+                            writer.WriteField(expandoObj.driver_id);
+                            writer.WriteField(expandoObj.create_date);
+                            writer.WriteField(expandoObj.pickup_time);
+                            writer.WriteField(expandoObj.pickup_postalcode);
+                            writer.WriteField(expandoObj.Pickup_Latitude);
+                            writer.WriteField(expandoObj.Pickup_Longtitude);
+                            writer.WriteField(expandoObj.delivery_date);
+                            writer.WriteField(expandoObj.delivery_time);
+                            writer.WriteField(expandoObj.delivery_type);
+                            writer.WriteField(expandoObj.delivery_postalcode);
+                            writer.WriteField(expandoObj.delivery_latitude);
+                            writer.WriteField(expandoObj.delivery_longitude);
+                            writer.WriteField(expandoObj.service_time);
+                            writer.WriteField(expandoObj.weight);
+                            writer.WriteField(expandoObj.vol_w);
+                            writer.WriteField(expandoObj.vol_h);
+                            writer.WriteField(expandoObj.vol_l);
+                            writer.WriteField(expandoObj.vol_weight);
+                            writer.WriteField(expandoObj.volume);
+                            writer.WriteField(expandoObj.pay);
+                            writer.WriteField(expandoObj.Bonus);
+                            writer.NextRecord();
+                            empObj.Add(expandoObj);
+                        }
+                        else
+                        {
+                            continue;
+                        }
                     }
                 }
                 Console.WriteLine("Total Records: " + countRecord);
@@ -211,14 +239,14 @@ namespace GraphQLBat
         {
             string jsonData = GetJSONData();
 
-            Console.WriteLine("...using System.Dynamic and casts");
-            Console.WriteLine();
-            Console.WriteLine(JsonToCsv(jsonData, ","));
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine("...using a provided StrongType with System.Reflection.");
-            Console.WriteLine();
-            Console.WriteLine(JsonToCsv<JsonData>(jsonData, ","));
+            //Console.WriteLine("...using System.Dynamic and casts");
+            //Console.WriteLine();
+            //Console.WriteLine(JsonToCsv(jsonData, ","));
+            //Console.WriteLine();
+            //Console.WriteLine();
+            //Console.WriteLine("...using a provided StrongType with System.Reflection.");
+            //Console.WriteLine();
+            //Console.WriteLine(JsonToCsv<JsonData>(jsonData, ","));
         }
         static private string JsonToCsv(string jsonContent, string delimiter)
         {
@@ -266,29 +294,27 @@ namespace GraphQLBat
         public class JsonData
         {
             public string ref_no { get; set; }
+            public string bundle_id { get; set; }
+            public string driver_id { get; set; }
             public DateTime create_date { get; set; }
-            public DateTime delivr_date { get; set; }
-            public DateTime pickup_date { get; set; }
-            public string delivr_driver_id { get; set; }
-            public string pickup_driver_id { get; set; }
-            public string pickup_id { get; set; }
-            public string dst_postcode { get; set; }
-            public string dst_bundle_name { get; set; }
-            public string dst_lat { get; set; }
-            public string dst_lng { get; set; }
-            public string src_postcode { get; set; }
-            public string src_bundle_name { get; set; }
-            public string src_lat { get; set; }
-            public string src_lng { get; set; }
-            public string dst_addr { get; set; }
+            public DateTime pickup_time { get; set; }
+            public string pickup_postalcode { get; set; }
+            public string Pickup_Latitude { get; set; }
+            public string Pickup_Longtitude { get; set; }
+            public DateTime delivery_date { get; set; }
+            public DateTime delivery_time { get; set; }
+            public string delivery_type { get; set; }
+            public string delivery_postalcode { get; set; }
+            public string delivery_latitude { get; set; }
+            public string delivery_longitude { get; set; }
+            public string service_time { get; set; }
             public double vol_w { get; set; }
             public double vol_h { get; set; }
             public double vol_l { get; set; }
             public double vol_weight { get; set; }
-            public double weight { get; set; }
-            public string pay_category { get; set; }
-            public double pay_bonus { get; set; }
+            public double volume { get; set; }
             public double pay { get; set; }
+            public double Bonus { get; set; }
         }
         #endregion
 

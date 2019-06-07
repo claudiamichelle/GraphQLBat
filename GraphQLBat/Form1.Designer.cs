@@ -37,6 +37,8 @@
             this.lbl_totalrec = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.btn_close = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTest)).BeginInit();
             this.SuspendLayout();
             // 
@@ -99,11 +101,11 @@
             // lbl_totalrec
             // 
             this.lbl_totalrec.AutoSize = true;
-            this.lbl_totalrec.Location = new System.Drawing.Point(624, 76);
+            this.lbl_totalrec.Location = new System.Drawing.Point(542, 77);
             this.lbl_totalrec.Name = "lbl_totalrec";
-            this.lbl_totalrec.Size = new System.Drawing.Size(80, 13);
+            this.lbl_totalrec.Size = new System.Drawing.Size(169, 13);
             this.lbl_totalrec.TabIndex = 11;
-            this.lbl_totalrec.Text = "Total Records :";
+            this.lbl_totalrec.Text = "Total Records ( for all deliv. date) :";
             // 
             // label1
             // 
@@ -127,11 +129,33 @@
             this.btn_close.UseVisualStyleBackColor = false;
             this.btn_close.Click += new System.EventHandler(this.Btn_close_Click);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(492, 303);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(131, 13);
+            this.label2.TabIndex = 14;
+            this.label2.Text = "* \"Next Day Delivery\" only";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(20, 250);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(324, 13);
+            this.label3.TabIndex = 15;
+            this.label3.Text = "Above is raw JSON, please refer to processed result in CSV instead";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.btn_close);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lbl_totalrec);
@@ -160,5 +184,7 @@
         private System.Windows.Forms.Label lbl_totalrec;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btn_close;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
     }
 }

@@ -208,12 +208,12 @@ namespace GraphQLBat
                             writer.WriteField(expandoObj.Bonus);
                             writer.NextRecord();
                             empObj.Add(expandoObj);
-                        }
-                        else
-                        {
-                            continue;
-                        }
                     }
+                        else
+                    {
+                        continue;
+                    }
+                }
                 }
                 Console.WriteLine("Total Records: " + countRecord);
                 lbl_totalrec.Text = "Total Records: " + countRecord;

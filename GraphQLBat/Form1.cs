@@ -25,8 +25,7 @@ namespace GraphQLBat
         public static string UID;
         public static string startdate;
         public static string enddate;
-
-
+        
         public Form1()
         {
             InitializeComponent();
@@ -45,12 +44,6 @@ namespace GraphQLBat
             enddate = dtp_EndDate.Text.ToString();
             #endregion
 
-            #region TEST PRINT
-            //Console.WriteLine("UID : " + UID);
-            //Console.WriteLine("Start Date : " + startdate);
-            //Console.WriteLine("End Date : " + enddate);
-            #endregion
-
             #region QUERY
             var gql = new UFGraphQLClient.GraphQLClient("https://deliver.urbanfox.asia/api/z/coe_project/2qi8lDa2gUAUIkKNnTznUAXJtkk/gql", this);
 
@@ -59,7 +52,6 @@ namespace GraphQLBat
             //@"{courex_user_profile(uid:" + UID + "){user_uid user_full_name}}";
 
             /* query for startdate-enddate */
-            // @"{delivery_list : transaction_info_list (start_date:""" + startdate + "\"" + ",end_date:" + "\"" + enddate + "\"" + "){list {ref_no create_date  delivr_date pickup_date delivr_driver_id pickup_driver_id pickup_id dst_postcode dst_bundle_name dst_lat dst_lng src_postcode src_bundle_name src_lat src_lng dst_addr vol_w vol_h vol_l vol_weight weight pay_category pay_bonus pay}}}";
             @"{delivery_list : transaction_info_list (start_date:""" + startdate + "\"" + ",end_date:" + "\"" + enddate + "\"" + "){list {ref_no    bundle_id      driver_id: delivr_driver_id      create_date      pickup_time: pickup_date      pickup_postalcode: src_postcode      Pickup_Latitude: src_lat      Pickup_Longtitude: src_lng      delivery_date: delivr_date      delivery_time: delivr_date      delivery_type      delivery_postalcode: dst_postcode      delivery_latitude: dst_lat      delivery_longitude: dst_lng      service_time: service_type      weight      vol_w      vol_h      vol_l      vol_weight      volume: vol_w    pay      Bonus: pay_bonus}    }}";
 
             Console.WriteLine(query);

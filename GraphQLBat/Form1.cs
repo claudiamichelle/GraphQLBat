@@ -25,7 +25,7 @@ namespace GraphQLBat
         public static string UID;
         public static string startdate;
         public static string enddate;
-        
+
         public Form1()
         {
             InitializeComponent();
@@ -140,7 +140,13 @@ namespace GraphQLBat
                         if (dt[i].delivery_date.Value.Date == dtp_EndDate.Value.Date)
                         {
                             expandoObj.ref_no = Convert.ToString(dt[i].ref_no);
+
                             expandoObj.bundle_id = Convert.ToString(dt[i].bundle_id);
+                            if (expandoObj.bundle_id == null || expandoObj.bundle_id == "")
+                            {
+                                expandoObj.bundle_id = "0";
+                            }
+
                             expandoObj.driver_id = Convert.ToString(dt[i].driver_id);
                             expandoObj.create_date = dt[i].create_date.Value.ToString("yyyy-MM-dd'T'HH:mm:ss");
                             expandoObj.pickup_time = "8:00:00";
@@ -208,12 +214,12 @@ namespace GraphQLBat
                             writer.WriteField(expandoObj.Bonus);
                             writer.NextRecord();
                             empObj.Add(expandoObj);
-                    }
+                        }
                         else
-                    {
-                        continue;
+                        {
+                            continue;
+                        }
                     }
-                }
                 }
                 Console.WriteLine("Total Records: " + countRecord);
                 lbl_totalrec.Text = "Total Records: " + countRecord;

@@ -39,6 +39,7 @@
             this.btn_close = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.lbl_totalRec_nextday = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTest)).BeginInit();
             this.SuspendLayout();
             // 
@@ -101,11 +102,11 @@
             // lbl_totalrec
             // 
             this.lbl_totalrec.AutoSize = true;
-            this.lbl_totalrec.Location = new System.Drawing.Point(542, 77);
+            this.lbl_totalrec.Location = new System.Drawing.Point(543, 58);
             this.lbl_totalrec.Name = "lbl_totalrec";
-            this.lbl_totalrec.Size = new System.Drawing.Size(169, 13);
+            this.lbl_totalrec.Size = new System.Drawing.Size(80, 13);
             this.lbl_totalrec.TabIndex = 11;
-            this.lbl_totalrec.Text = "Total Records ( for all deliv. date) :";
+            this.lbl_totalrec.Text = "Total Records :";
             // 
             // label1
             // 
@@ -149,11 +150,21 @@
             this.label3.TabIndex = 15;
             this.label3.Text = "Above is raw JSON, please refer to processed result in CSV instead";
             // 
+            // lbl_totalRec_nextday
+            // 
+            this.lbl_totalRec_nextday.AutoSize = true;
+            this.lbl_totalRec_nextday.Location = new System.Drawing.Point(543, 77);
+            this.lbl_totalRec_nextday.Name = "lbl_totalRec_nextday";
+            this.lbl_totalRec_nextday.Size = new System.Drawing.Size(173, 13);
+            this.lbl_totalRec_nextday.TabIndex = 16;
+            this.lbl_totalRec_nextday.Text = "Filtered Records (Next Day Deliv.) :";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.lbl_totalRec_nextday);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btn_close);
@@ -186,5 +197,6 @@
         private System.Windows.Forms.Button btn_close;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label lbl_totalRec_nextday;
     }
 }

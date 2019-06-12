@@ -149,14 +149,17 @@ namespace GraphQLBat
 
                             expandoObj.driver_id = Convert.ToString(dt[i].driver_id);
                             expandoObj.create_date = dt[i].create_date.Value.ToString("yyyy-MM-dd'T'HH:mm:ss");
-                            expandoObj.pickup_time = "8:00:00";
+                            expandoObj.pickup_time = "08:00";
                             expandoObj.pickup_postalcode = Convert.ToString(dt[i].pickup_postalcode);
                             expandoObj.Pickup_Latitude = Convert.ToString(dt[i].Pickup_Latitude);
                             expandoObj.Pickup_Longtitude = Convert.ToString(dt[i].Pickup_Longtitude);
                             expandoObj.delivery_date = dt[i].delivery_date.Value.ToString("yyyy-MM-dd");
-                            expandoObj.delivery_time = dt[i].delivery_date.Value.ToString("HH:mm:ss");
+                            expandoObj.delivery_time = dt[i].delivery_date.Value.ToString("HH:mm");
                             expandoObj.delivery_type = Convert.ToString(dt[i].delivery_type);
+
                             expandoObj.delivery_postalcode = Convert.ToString(dt[i].delivery_postalcode);
+                            expandoObj.delivery_postalcode = (expandoObj.delivery_postalcode).Replace(" ", "");
+
                             expandoObj.delivery_latitude = Convert.ToString(dt[i].delivery_latitude);
                             expandoObj.delivery_longitude = Convert.ToString(dt[i].delivery_longitude);
                             expandoObj.service_time = 10;
@@ -165,7 +168,12 @@ namespace GraphQLBat
                             expandoObj.vol_h = Convert.ToString(dt[i].vol_h);
                             expandoObj.vol_l = Convert.ToString(dt[i].vol_l);
                             expandoObj.vol_weight = Convert.ToString(dt[i].vol_weight);
-                            double countVolume = dt[i].vol_w * dt[i].vol_h * dt[i].vol_l * 0.000001;
+
+                            /* Volume old formula */
+                            //double countVolume = dt[i].vol_w * dt[i].vol_h * dt[i].vol_l * 0.000001;
+                            //expandoObj.volume = Convert.ToString(countVolume.ToString("#.000000"));
+
+                            double countVolume = dt[i].vol_w * dt[i].vol_h * dt[i].vol_l;
                             expandoObj.volume = Convert.ToString(countVolume);
 
                             double payment, totalvol;
@@ -187,7 +195,12 @@ namespace GraphQLBat
                                 payment = 12;
                             }
                             expandoObj.pay = Convert.ToString(payment);
+
                             expandoObj.Bonus = Convert.ToString(dt[i].Bonus);
+                            if (expandoObj.Bonus != null)
+                            {
+                                expandoObj.Bonus = null; 
+                            }
 
                             writer.WriteField(expandoObj.ref_no);
                             writer.WriteField(expandoObj.bundle_id);
@@ -222,7 +235,9 @@ namespace GraphQLBat
                     }
                 }
                 Console.WriteLine("Total Records: " + countRecord);
+                Console.WriteLine("Filter Records: " + empObj.Count);
                 lbl_totalrec.Text = "Total Records: " + countRecord;
+                lbl_totalRec_nextday.Text = "Filtered Records(Next Day Deliv.) : " + empObj.Count;
             }
             #region MESSAGE BOX - NOTIFIED CSV SAVED
             string message = Path.GetDirectoryName(sfd.FileName);
